@@ -26,13 +26,13 @@ function ImageSim(target,scope,n_img)
     λ  = scope.λ
     m1 = scope.𝓂[1]  # Image size x
     m2 = scope.𝓂[2]  # Image size y
+    σ_s = scope.σ_s
 
     # Derived Values
     n    = length(SNR)   # number of objects in image
     𝓂   = m1*m2         # total number of pixels
     μx   = rand(1:m1,n)  # random centroid of each object, x
     μy   = rand(1:m2,n)  # random centroid of each object, y
-    σ_s  = 0.45*λ*f/D/p  # std dev of signal, pixels
     W_m1 = 2*ceil(3*σ_s) # reasonable size of the tracking window
     W_m2 = W_m1          # reasonable size of the tracking window
     W𝓂  = W_m1*W_m2     # tracking window pixels
