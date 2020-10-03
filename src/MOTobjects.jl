@@ -5,6 +5,8 @@ struct telescope
     p::Float64 # pixel pitech, m
     λ::Float64 # wavelength, m
     𝓂::AbstractArray{Int,1} # Image Size (m1 x m2), pixels
+    σ_s::Float64 # Std Dev of signal derived from telescope parameters
+    telescope(f,D,σ,p,λ,𝓂) = new(f,D,σ,p,λ,𝓂,0.45*λ*f/D/p)
 end
 
 struct target
