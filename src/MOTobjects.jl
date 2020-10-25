@@ -13,3 +13,18 @@ struct target
     SNR::Float64 # Signal to Noise Ratio
     vel::Float64 # Target Velocity Magnitude, pixels/image
 end
+
+struct Detection
+    Centroid::SVector{2,Float64}
+    CentroidUncertainty::SVector{2,Float64}
+    Signal::SVector{1,Float64}
+    SignalUncertainty::SVector{1,Float64}
+end
+
+struct DataPipe{T1, T2, T3}
+    BackgroundMethod::T1
+    ClusterMethod::T2
+    Threshold::T3
+end
+
+export telescope, target, Detection, DataPipe

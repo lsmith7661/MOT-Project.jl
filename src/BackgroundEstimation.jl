@@ -57,3 +57,5 @@ function SigmaClipping(img,Wpsf::Int=10,n::Int=5)
 
     return σb, B, Ib
 end
+
+export SigmaClipping
