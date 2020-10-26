@@ -103,7 +103,7 @@ function PixelThreshold(Img;kmax::Int=20,T::Int=100)
 
         #display(heatmap(Imgᵢ, color=:grays, title=string("Tracking Window #",ii)))
 
-        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²))
+        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
     end
 
     return d, dsmum
@@ -122,7 +122,7 @@ function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100)
 
     # Tracking Window (3σ each diection)
     σ_s = sqrt(var(Img)) # Could try to calculate from known camera properties
-    W_m1 = 50#2*ceil(3*σ_s) # Hard code window size???
+    W_m1 = 10#2*ceil(3*σ_s) # Hard code window size???
     W_m2 = W_m1;
 
     # Detections using thresholding
@@ -238,7 +238,7 @@ function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100)
 
         #display(heatmap(Imgᵢ, color=:grays, title=string("Tracking Window #",ii)))
 
-        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²))
+        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
     end
 
     return d
