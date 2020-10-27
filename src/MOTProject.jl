@@ -17,6 +17,7 @@ include("ImageSim.jl")
 include("Preprocess.jl")
 include("BackgroundEstimation.jl")
 include("ClusterMethods.jl")
+include("Filters.jl")
 
 # Export specific function (dont have to call MOTProject.myfun to use)
 export

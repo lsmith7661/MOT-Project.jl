@@ -1,6 +1,6 @@
 # Take in image and return detections
 
-function PixelThreshold(Img;kmax::Int=20,T::Int=100)
+function PixelThreshold(Img;kmax::Int=20,T::Int=100, Time::Real=1)
     # Img     - m1xm2 array of intensities, an image
     # k_max   - maximum k number of clusters
     # T       - Threshold
@@ -103,14 +103,14 @@ function PixelThreshold(Img;kmax::Int=20,T::Int=100)
 
         #display(heatmap(Imgᵢ, color=:grays, title=string("Tracking Window #",ii)))
 
-        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
+        d[ii] = Detection(Time,SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
     end
 
     return d, dsmum
 end
 
 
-function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100)
+function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100, Time::Real=1)
     # Img     - m1xm2 array of intensities, an image
     # dmax    - maximum distance between two clusters to merge (condition to end loop)
     # T       - Threshold
@@ -238,7 +238,7 @@ function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100)
 
         #display(heatmap(Imgᵢ, color=:grays, title=string("Tracking Window #",ii)))
 
-        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
+        d[ii] = Detection(Time, SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
     end
 
     return d

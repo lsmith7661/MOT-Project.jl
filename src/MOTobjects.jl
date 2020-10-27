@@ -15,6 +15,7 @@ struct target
 end
 
 struct Detection
+    Time::Float64
     Centroid::SVector{2,Float64}
     CentroidUncertainty::SVector{2,Float64}
     Signal::SVector{1,Float64}
@@ -28,4 +29,11 @@ struct DataPipe{T1, T2, T3}
     Threshold::T3
 end
 
-export telescope, target, Detection, DataPipe
+struct Track
+    Detections::Array{Array{Detection}}
+    State::Array{SVector{Float64,1}}
+    Covariance::Array{SMatrix{2,2,Float64}}
+    Residuals::Array{SVector{Float64,1}}
+end
+
+export telescope, target, Detection, DataPipe, Track
