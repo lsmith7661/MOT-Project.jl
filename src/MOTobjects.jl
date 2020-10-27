@@ -19,6 +19,7 @@ struct Detection
     CentroidUncertainty::SVector{2,Float64}
     Signal::SVector{1,Float64}
     SignalUncertainty::SVector{1,Float64}
+    TrackingWindow::SVector{4,Float64}
 end
 
 struct DataPipe{T1, T2, T3}
