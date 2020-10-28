@@ -23,8 +23,9 @@ include("Filters.jl")
 export
     Detection
     ImageSim
-    DataPipe, SigmaClipping, PixelThreshold, HierarchicalAgglomerative
+    SigmaClipping, PixelThreshold, HierarchicalAgglomerative
     Preprocess
+    KF, KF!
 
 #=
 Make a DataPipe which contains an background estimation method, clustering method,

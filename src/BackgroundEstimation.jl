@@ -1,6 +1,6 @@
 # Background Estiamtion
 
-function SigmaClipping(img,Wpsf::Int=10,n::Int=5)
+function SigmaClipping(img,Wpsf::Int=10,n::Int=2)
     # Image
     # Estimated psf size for smoothing window
     # Number of interations for clipping

@@ -23,17 +23,21 @@ struct Detection
     TrackingWindow::SVector{4,Float64}
 end
 
-struct DataPipe{T1, T2, T3}
+#=struct DataPipe{T1, T2, T3}
     BackgroundMethod::T1
     ClusterMethod::T2
     Threshold::T3
-end
+end =#
 
 struct Track
-    Detections::Array{Array{Detection}}
-    State::Array{SVector{Float64,1}}
-    Covariance::Array{SMatrix{2,2,Float64}}
-    Residuals::Array{SVector{Float64,1}}
+    Measurements::Array{Detection,1}
+    State::SMatrix{4,1,Float64}
+    Covariance::SMatrix{4,4,Float64}
+    Residuals::SMatrix{2,1,Float64}
 end
 
-export telescope, target, Detection, DataPipe, Track
+struct TrackHistory
+    Tracks::Array{Track,1}
+end
+
+export telescope, target, Detection, Track, TrackHistory
