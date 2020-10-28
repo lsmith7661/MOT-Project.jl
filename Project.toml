@@ -17,6 +17,7 @@ VideoIO = "d6d074c3-1acf-5d4c-9a43-ef38773959a2"
 
 [compat]
 Distributions = "0.23"
+ImageView = "0.10"
 julia = "1"
 
 [extras]
