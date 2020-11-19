@@ -8,7 +8,7 @@ module MOTProject
 using StaticArrays
 using VideoIO, Plots, ImageView
 using Distributions, LinearAlgebra
-using DataStructures, ImageFiltering
+using DataStructures, ImageFiltering, SpecialFunctions
 using Clustering, Distances
 
 # Include my support files with custome functions and objects and stuff
@@ -18,6 +18,7 @@ include("Preprocess.jl")
 include("BackgroundEstimation.jl")
 include("ClusterMethods.jl")
 include("Filters.jl")
+include("Pruning.jl")
 
 # Export specific function (dont have to call MOTProject.myfun to use)
 export
@@ -25,19 +26,7 @@ export
     ImageSim
     SigmaClipping, PixelThreshold, HierarchicalAgglomerative
     Preprocess
-    KF, KF!
-
-#=
-Make a DataPipe which contains an background estimation method, clustering method,
-and threshold value
-
-DataPipe{BackgroundMethod, ClusterMethod, Threshold}
-=#
-
-#function DataPipe(Img::AbstractMatrix, DataPipe::DataPipe)
-#    σb, B, Ib = DataPipe.BackgroundMethod(Img)
-    #ClusterResult = DataPipe.ClusterMethod(Ib,k,DataPipe.Threshold)
-#end
-
+    KF, KF!, TOMHT, TOMHT!
+    MBest
 
 end # end module
