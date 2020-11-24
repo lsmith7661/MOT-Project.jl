@@ -1,6 +1,6 @@
 # Take in image and return detections
 
-function PixelThreshold(Img;kmax::Int=20,T::Int=100)
+function PixelThreshold(Img;kmax::Int=20,T::Int=100, Time::Real=1)
     # Img     - m1xm2 array of intensities, an image
     # k_max   - maximum k number of clusters
     # T       - Threshold
@@ -103,30 +103,33 @@ function PixelThreshold(Img;kmax::Int=20,T::Int=100)
 
         #display(heatmap(Imgᵢ, color=:grays, title=string("Tracking Window #",ii)))
 
-        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
+        d[ii] = Detection(Time,SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
     end
 
     return d, dsmum
-end
+end # end PixelThreshold
 
-
-function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100)
+function HierarchicalAgglomerative(Img;dmax::Int=50,TP::TuningParams, Time::Real=1)
     # Img     - m1xm2 array of intensities, an image
     # dmax    - maximum distance between two clusters to merge (condition to end loop)
-    # T       - Threshold
+    # T       - Threshold (or Probability of False Alarm)
     # mean of noise pdf assumed 0
+
+    T = TP.Pfa
+    Inflator = TP.Inflator
 
     # Image size
     𝓂1 = size(Img)[1] #Vertical
     𝓂2 = size(Img)[2] #Horizontal
 
     # Tracking Window (3σ each diection)
-    σ_s = sqrt(var(Img)) # Could try to calculate from known camera properties
-    W_m1 = 10#2*ceil(3*σ_s) # Hard code window size???
+    σ_s = Inflator*sqrt(var(Img)) # (This 3 is wrong) Could try to calculate from known camera properties
+    W_m1 = TP.TrackingWindow #2*ceil(3*σ_s) # Hard code window size???
     W_m2 = W_m1;
 
     # Detections using thresholding
-    pᵢ = findall(x -> x>T,Img)
+    γ = sqrt(2)*σ_s*erfinv(1-2*T)
+    pᵢ = findall(x -> x>γ,Img)
 
     # HA Clustering
     pk = [last.(Tuple.(pᵢ)) first.(Tuple.(pᵢ))]' # Cartesian index results of kmeans are horz x vert - need vert x horz for consistancy
@@ -238,10 +241,15 @@ function HierarchicalAgglomerative(Img;dmax::Int=50,T::Int=100)
 
         #display(heatmap(Imgᵢ, color=:grays, title=string("Tracking Window #",ii)))
 
-        d[ii] = Detection(SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
+        # Caluclate Probability of Detection
+        #Pd = 1 - (1/2)*(1 + erf((γ-Img[Int(round(ζ̂c)),Int(round(η̂c))])/(sqrt(2)*σn)))
+        Pd = 1 - (1/2)*(1 + erf((γ-s)/(sqrt(2)*σn)))
+        #Pd = min(Pd,.999)
+
+        d[ii] = Detection(ii, Time, Pd, SVector(ζ̂c,η̂c),SVector(σc_ζ²,σc_η²),SVector(s),SVector(σ_s²),SVector(η̂c-W_m2/2, ζ̂c+W_m1/2, η̂c+W_m2/2, ζ̂c-W_m1/2))
     end
 
-    return d
+    return d, Csizes
 end
 
 export PixelThreshold, HierarchicalAgglomerative
