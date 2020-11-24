@@ -6,10 +6,12 @@ module MOTProject
 
 # Using pkgs for the whole module
 using StaticArrays
-using VideoIO, Plots, ImageView
+using VideoIO, ImageView
+using Plots: Gray, @layout
 using Distributions, LinearAlgebra
 using DataStructures, ImageFiltering, SpecialFunctions
-using Clustering, Distances
+using Clustering
+using Distances
 
 # Include my support files with custome functions and objects and stuff
 include("MOTobjects.jl")
@@ -22,11 +24,11 @@ include("Pruning.jl")
 
 # Export specific function (dont have to call MOTProject.myfun to use)
 export
-    Detection
-    ImageSim
-    SigmaClipping, PixelThreshold, HierarchicalAgglomerative
-    Preprocess
-    KF, KF!, TOMHT, TOMHT!
+    Detection,
+    ImageSim,
+    SigmaClipping, PixelThreshold, HierarchicalAgglomerative,
+    Preprocess,
+    KF, KF!, TOMHT, TOMHT!,
     MBest
 
 end # end module
